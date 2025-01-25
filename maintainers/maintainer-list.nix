@@ -192,6 +192,12 @@
     github = "2gn";
     githubId = 101851090;
   };
+  _347Online = {
+    name = "Katie Janzen";
+    email = "katiejanzen@347online.me";
+    github = "347Online";
+    githubid = 38228372;
+  };
   _360ied = {
     name = "Brian Zhu";
     email = "therealbarryplayer@gmail.com";
