@@ -10,8 +10,8 @@
   openssl,
   pulseaudio,
   libsForQt5,
-  qt5,
-  xorg,
+  libX11,
+  libXScrnSaver,
 }:
 let
   inherit (stdenv.hostPlatform) system;
@@ -82,26 +82,28 @@ stdenv.mkDerivation (
     # QT_QPA_PLATFORM_PLUGIN_PATH = "${qt5.qtbase.bin}/lib/qt-${qt5.qtbase.version}/plugins/platforms";
     qtWrapperArgs = [
       "--set QT_DEBUG_PLUGINS 1"
-      "--set QT_QPA_PLATFORM_PLUGIN_PATH ${qt5.qtbase.bin}/lib/qt-${qt5.qtbase.version}/plugins/platforms"
+      "--set QT_QPA_PLATFORM_PLUGIN_PATH ${libsForQt5.qtbase.bin}/lib/qt-${libsForQt5.qtbase.version}/plugins/platforms"
     ];
 
     buildInputs = [
       alsa-lib
       openssl
       pulseaudio
-      libsForQt5.qt5.qtspeech
-      libsForQt5.qt5.qtmultimedia
-      libsForQt5.qt5.qtx11extras
-      qt5.qtbase
-      xorg.libX11
-      xorg.libXScrnSaver
+      libsForQt5.qtspeech
+      libsForQt5.qtmultimedia
+      libsForQt5.qtx11extras
+      libsForQt5.qtbase
+      libX11
+      libXScrnSaver
     ];
 
     nativeBuildInputs =
       [
-        autoPatchelfHook
-        qt5.wrapQtAppsHook
         makeWrapper
+      ]
+      ++ lib.optionals stdenv.hostPlatform.isLinux [
+        autoPatchelfHook
+        libsForQt5.wrapQtAppsHook
       ]
       ++ lib.optionals stdenv.hostPlatform.isDarwin [
         xar
@@ -114,11 +116,11 @@ stdenv.mkDerivation (
     # });
 
     meta = {
-      description = "TeamTalk 5 is a freeware conferencing system which allows multiple users to participate in audio and video conversations.";
+      description = "Freeware conferencing system";
       homepage = "https://bearware.dk";
       license = lib.licenses.unfree;
       maintainers = with lib.maintainers; [
-        _347online
+        _347Online
       ];
       platforms = [
         "aarch64-darwin"
