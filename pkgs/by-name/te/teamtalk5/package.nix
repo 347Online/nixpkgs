@@ -85,7 +85,7 @@ stdenv.mkDerivation (
       "--set QT_QPA_PLATFORM_PLUGIN_PATH ${libsForQt5.qtbase.bin}/lib/qt-${libsForQt5.qtbase.version}/plugins/platforms"
     ];
 
-    buildInputs = [
+    buildInputs = lib.optionals stdenv.hostPlatform.isLinux [
       alsa-lib
       openssl
       pulseaudio
