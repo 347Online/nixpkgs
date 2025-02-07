@@ -75,15 +75,8 @@ stdenv.mkDerivation (
         makeWrapper $out/Applications/TeamTalk5.app/Contents/MacOS/TeamTalk5 $out/bin/teamtalk
       ''
       + lib.optionalString stdenv.hostPlatform.isLinux ''
-        makeWrapper $out/client/teamtalk5 $out/bin/teamtalk
+        makeWrapper $out/client/teamtalk5 $out/bin/teamtalk-client
       '';
-
-    # QT_DEBUG_PLUGINS = 1;
-    # QT_QPA_PLATFORM_PLUGIN_PATH = "${qt5.qtbase.bin}/lib/qt-${qt5.qtbase.version}/plugins/platforms";
-    qtWrapperArgs = [
-      "--set QT_DEBUG_PLUGINS 1"
-      "--set QT_QPA_PLATFORM_PLUGIN_PATH ${libsForQt5.qtbase.bin}/lib/qt-${libsForQt5.qtbase.version}/plugins/platforms"
-    ];
 
     buildInputs = lib.optionals stdenv.hostPlatform.isLinux [
       alsa-lib
@@ -92,7 +85,6 @@ stdenv.mkDerivation (
       libsForQt5.qtspeech
       libsForQt5.qtmultimedia
       libsForQt5.qtx11extras
-      libsForQt5.qtbase
       libX11
       libXScrnSaver
     ];
